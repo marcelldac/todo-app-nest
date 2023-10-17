@@ -1,9 +1,11 @@
+
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 
 import './App.css'
 
 interface Task{
+  id: string,
   text: string,
 }
 
@@ -33,7 +35,17 @@ function App() {
     }
   }
 
-  async function updateTask
+  async function updateTask(id: string) : Promise<void> {
+    try{
+      await axios.put('http://localhost:3000/task/update', {
+        id: id,
+        text: newTask,
+      })
+      getTasks();
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     getTasks();
@@ -46,8 +58,11 @@ function App() {
           return(
             <div key={index}>
               <h1>{value.text}</h1>
-              <form>
-                <input type='text' onChange={} placeholder='atualizar'/>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                updateTask(value.id);
+                }}>
+                <button type='submit'>editar</button>
               </form>
             </div>
           )
