@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 import './App.css'
@@ -23,8 +23,8 @@ function App() {
     }
   }
 
-  async function createTask(e: any) : Promise<void> {
-    e.preventDefault();
+  async function createTask( event : React.FormEvent<HTMLFormElement> ) : Promise<void> {
+    event.preventDefault();
     try{
       await axios.post<Task[]>('http://localhost:3000/task/create', {
         text: newTask,
@@ -63,17 +63,17 @@ function App() {
   return (
     <>
       <div className='read'>
-        {tasks.map((value: Task, index: number) => {
+        {tasks.map(( value: Task, index: number ) => {
           return(
             <div key={index}>
               <h1>{value.text}</h1>
-              <form onSubmit={(e) => {
+              <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 updateTask(value.id);
                 }}>
                 <button type='submit'>editar</button>
               </form>
-              <form onSubmit={(e) => {
+              <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 deleteTask(value.id);
                 }}>
@@ -85,7 +85,7 @@ function App() {
       </div>
       <div className='create'>
         <form onSubmit={createTask}>
-          <input type='text' onChange={(e) => {setNewTask(e.target.value)}}/>
+          <input type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => {setNewTask(e.target.value)}}/>
           <button type='submit'>Criar</button>
         </form>
       </div>
