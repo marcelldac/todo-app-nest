@@ -47,6 +47,15 @@ function App() {
     }
   }
 
+  async function deleteTask(id: string): Promise<void>{
+    try{
+      await axios.delete('http://localhost:3000/task/delete', { data: { id } });
+      getTasks();
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getTasks();
   }, [])
@@ -63,6 +72,12 @@ function App() {
                 updateTask(value.id);
                 }}>
                 <button type='submit'>editar</button>
+              </form>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                deleteTask(value.id);
+                }}>
+                <button type='submit'>apagar</button>
               </form>
             </div>
           )
