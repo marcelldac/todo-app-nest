@@ -1,33 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import axios from 'axios';
+
 import './App.css'
 
+interface Task{
+  text: string,
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [tasks, setTask] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState<string>();
+
+  async function getTasks(): Promise<void> {
+    try{
+      const res = await axios.get<Task[]>('http://localhost:3000/task/read');
+      setTask(res.data);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function createTask(e: any) : Promise<void> {
+    e.preventDefault();
+    try{
+      await axios.post<Task[]>('http://localhost:3000/task/create', {
+        text: newTask,
+      });
+      getTasks();
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function updateTask
+
+  useEffect(() => {
+    getTasks();
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='read'>
+        {tasks.map((value: Task, index: number) => {
+          return(
+            <div key={index}>
+              <h1>{value.text}</h1>
+              <form>
+                <input type='text' onChange={} placeholder='atualizar'/>
+              </form>
+            </div>
+          )
+        })}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className='create'>
+        <form onSubmit={createTask}>
+          <input type='text' onChange={(e) => {setNewTask(e.target.value)}}/>
+          <button type='submit'>Criar</button>
+        </form>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
