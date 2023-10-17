@@ -18,6 +18,7 @@ function App() {
     try{
       const res = await axios.get<Task[]>('http://localhost:3000/task/read');
       setTask(res.data);
+      setNewTask("");
     }catch(error){
       console.log(error);
     }
@@ -39,7 +40,7 @@ function App() {
     if(!newTask){
       return alert("Input vazio")
     }
-    
+
     try{
       await axios.put('http://localhost:3000/task/update', {
         id: id,
@@ -89,7 +90,7 @@ function App() {
       </div>
       <div className='create'>
         <form onSubmit={createTask}>
-          <input type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => {setNewTask(e.target.value)}}/>
+          <input value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
           <button type='submit'>Criar</button>
         </form>
       </div>
