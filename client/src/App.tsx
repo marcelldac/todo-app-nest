@@ -108,7 +108,7 @@ function App() {
       <Box>
         <form onSubmit={createTask}>
           <Input value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
-          <Button type='submit' mt={5} h={50} w={60}>Criar</Button>
+          <Button type='submit' mt={5} h={50} w={60} colorScheme='green'>Criar</Button>
         </form>
       </Box>
     </>
