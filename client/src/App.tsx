@@ -64,11 +64,16 @@ function App() {
   }
 
   async function deleteTask(id: string): Promise<void>{
-    try{
-      await axios.delete('http://localhost:3000/task/delete', { data: { id } });
-      getTasks();
-    }catch(error){
-      console.log(error);
+    const res = confirm("Deseja realmente apagar a task?");
+    if(res){
+      try{
+        await axios.delete('http://localhost:3000/task/delete', { data: { id } });
+        getTasks();
+      }catch(error){
+        console.log(error);
+      };
+    } else {
+      return;
     }
   }
 
