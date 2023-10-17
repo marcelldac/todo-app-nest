@@ -78,10 +78,10 @@ function App() {
 
   return (
     <>
-      <Box>
+      <Flex flexDirection='column' justifyContent='center' alignItems='center'>
         {tasks.map(( value: Task, index: number ) => {
           return(
-            <Box key={index} bgColor='green.200' m={30} p={30} borderRadius={20}>
+            <Box key={index} bgColor='green.200' mt='2em' w='20em' borderRadius={20} p='2.5em'>
               <Text fontSize={20}>{value.text}</Text>
               <Flex justify='space-evenly'>
                 <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -104,10 +104,10 @@ function App() {
             </Box>
           )
         })}
-      </Box>
+      </Flex>
       <Box>
         <form onSubmit={createTask}>
-          <Input value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
+          <Input variant="flushed" mt='2em' textAlign='center' value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
           <Button type='submit' mt={5} h={50} w={60} colorScheme='green'>Criar</Button>
         </form>
       </Box>
