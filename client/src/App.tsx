@@ -36,6 +36,10 @@ function App() {
   }
 
   async function updateTask(id: string) : Promise<void> {
+    if(!newTask){
+      return alert("Input vazio")
+    }
+    
     try{
       await axios.put('http://localhost:3000/task/update', {
         id: id,
