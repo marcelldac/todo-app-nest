@@ -1,6 +1,15 @@
 
+import { 
+  Box, 
+  Button, 
+  Flex, 
+  Icon, 
+  Input, 
+  Text
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 
 import './App.css'
 
@@ -37,14 +46,16 @@ function App() {
   }
 
   async function updateTask(id: string) : Promise<void> {
-    if(!newTask){
-      return alert("Input vazio")
+    const res = prompt("Digite o novo texto da task: ");
+
+    if(!res){
+      return alert("Input não pode ser vazio.")
     }
 
     try{
       await axios.put('http://localhost:3000/task/update', {
         id: id,
-        text: newTask,
+        text: res,
       })
       getTasks();
     }catch(error){
@@ -67,33 +78,39 @@ function App() {
 
   return (
     <>
-      <div className='read'>
+      <Box>
         {tasks.map(( value: Task, index: number ) => {
           return(
-            <div key={index}>
-              <h1>{value.text}</h1>
-              <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                updateTask(value.id);
-                }}>
-                <button type='submit'>editar</button>
-              </form>
-              <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                deleteTask(value.id);
-                }}>
-                <button type='submit'>apagar</button>
-              </form>
-            </div>
+            <Box key={index} bgColor='green.200' m={30} p={30} borderRadius={20}>
+              <Text fontSize={20}>{value.text}</Text>
+              <Flex justify='space-evenly'>
+                <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  updateTask(value.id);
+                  }}>
+                  <Button type='submit'>
+                    <MdModeEditOutline/>
+                  </Button>
+                </form>
+                <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  deleteTask(value.id);
+                  }}>
+                  <Button type='submit'>
+                    <Icon as={MdDelete} />
+                  </Button>
+                </form>
+              </Flex>
+            </Box>
           )
         })}
-      </div>
-      <div className='create'>
+      </Box>
+      <Box>
         <form onSubmit={createTask}>
-          <input value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
-          <button type='submit'>Criar</button>
+          <Input value={newTask} type='text' onChange={(e : React.ChangeEvent<HTMLInputElement>) => { setNewTask( e.target.value ) }}/>
+          <Button type='submit' mt={5} h={50} w={60}>Criar</Button>
         </form>
-      </div>
+      </Box>
     </>
   )
 }
